@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>I am in index.html</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="page1.html">Page 1</a>
+    <a href="page2.html">Page 2</a>
+    <a href="page3.html">Page 3</a>
+    <a href="page4.html">Page 4</a>
+    <a href="page5.html">Page 5</a>
+  </nav>
+
+  <header>
+    <h1>I am in index.html</h1>
+    <p>The Virtual Idol of the Digital Future</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Who is Miku?</h2>
+      <p>
+        Hatsune Miku is a virtual singer powered by voice synthesis technology.
+        She represents creativity, music, and the fusion of art and technology,
+        driven by a global community of fans.
+      </p>
+    </section>
+
+    <section>
+      <h2>Why People Love Her</h2>
+      <p>
+        Miku is not just a character — she is a platform for expression.
+        Anyone can create songs, art, or performances using her voice,
+        making her a symbol of open creativity and digital culture.
+      </p>
+
+      <button onclick="showMessage()">Sing with Miku</button>
+      <div id="msg">🎶 Miku believes in your creativity 🎶</div>
+    </section>
+  </main>
+
+  <footer>
+    Fan-made Hatsune Miku themed site • Single-file HTML
+  </footer>
+
+  <script>
+    function showMessage() {
+      const msg = document.getElementById("msg");
+      // keep basic toggle logic if needed, but remove reliance on css opacity transition if we want pure raw
+      // but without css 'opacity' property content might not hide/show nicely. 
+      // i'll just use simple display block/none for "raw" feel if opacity was css based.
+      // originally it was opacity: 0 in css.
+
+      if (msg.style.display === 'none' || !msg.style.display) {
+        msg.style.display = 'block';
+      } else {
+        msg.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+
+</html>
