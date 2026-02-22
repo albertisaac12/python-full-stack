@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 app =  Flask(__name__)
 
 @app.route("/")
@@ -7,7 +7,7 @@ def index():
 
 @app.route("/hello",methods=["POST","GET"])
 def hello():
-    return "<h1>Hello There</h1>"
+    return "<h1>Hello There</h1>\n",200
 
 
 @app.route("/greet/<name>")
@@ -26,6 +26,14 @@ def handle_params():
         return f"{greeting},{name}"
     else:
         return "Some Parameters are missing"
+
+@app.route("/response",methods=["POST","GET"])
+def response():
+    response = make_response("Hello world")
+    response.status_code = 202
+    response.headers["content-type"] = "text/plain"
+    return response
+
 
 
 if __name__ == "__main__":
