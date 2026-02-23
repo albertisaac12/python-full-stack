@@ -3,10 +3,7 @@ app =  Flask(__name__, template_folder="templates", static_folder="static")
 
 @app.route("/")
 def index():
-    myvalue = "Neural Nine"
-    myresults = 10+20
-    mylist = [x for x in range(10)]
-    return render_template("index.html",myvalue=myvalue,myresults=myresults,mylist=mylist)
+    return render_template("index.html")
 
 @app.route("/other_but_not_other")
 def other():

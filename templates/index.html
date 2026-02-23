@@ -3,26 +3,5 @@
 {%block content %}
 
 <h1>Hello World</h1>
-<p>My value: {{myvalue}}</p>
-<p>My Results {{myresults}}</p>
-<ul>
-    {% for item in mylist%}
-    {%if item%2 == 0%}
-    <li style="color: red;">{{item}}</li>
-    {%else%}
-    <li style="color: blue;">{{item}}</li>
-    {%endif%}
-    {% endfor %}
-</ul>
-<p>My List {{mylist}}</p>
-
-<ul>
-    {% for item in mylist %}
-    <li {% if item%2==0 %} style="color: aqua;" {%else%} style="color: brown;" {%endif%}>{{item}}</li>
-    {%endfor%}
-
-</ul>
-
-<a href="{{url_for('other')}}">Other</a>
 
 {%endblock%}
