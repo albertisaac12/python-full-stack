@@ -1,34 +1,75 @@
-from flask import Flask, request, render_template, url_for, redirect, url_for
+from flask import Flask, request, render_template, url_for, redirect, url_for, Response,send_from_directory
 app =  Flask(__name__, template_folder="templates", static_folder="static")
 
-@app.route("/")
+@app.route("/",methods=["GET","POST"])
 def index():
-    return render_template("index.html")
+    if request.method == "GET":
+        return render_template("index.html")
+    elif request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-@app.route("/other_but_not_other")
-def other():
-    some_text = "Some Text"
-    return render_template("other.html",some_text=some_text)
+        print(password,username)
+
+        if username == "abhi" and password == "password":
+            return "Success",200
+        else:
+            return "Failure",403
+
+@app.route("/file_upload", methods=["POST"])
+def file_upload():
+    file = request.files.get("file")
+    # file.content_type()
+    # file.read().decode()
+    
+    if not file:
+        return {"error": "No file provided"}, 400
+    
+    from pypdf import PdfReader
+    import io
+
+    reader = PdfReader(io.BytesIO(file.read()))
+    
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    
+    return {"content": text}, 200 
 
 
-@app.route("/redirect_endpoint")
-def redirect_endpoint():
-    return redirect(url_for("other"))
+@app.route("/convert_csv",methods=["POST"])
+def convert_csv():
+    import pandas as pd
+    file = request.files.get("file")
+    df = pd.read_excel(file)
+    response = Response(
+        df.to_csv(),
+        mimetype="text/csv",
+        headers={
+            "Content-Disposition": "attachment; filename = result.csv"
+        }
+    )
+    return response
 
+@app.route("/convert_csv_two",methods=["POST"])
+def convert_csv_two():
+    import pandas as pd
+    import os
+    import uuid
+    file = request.files.get("file")
+    df = pd.read_excel(file)
 
-# Filters
+    if not os.path.exists("downloads"):
+        os.makedirs("downloads")
+    
+    filename = f"{uuid.uuid4()}.csv"
+    df.to_csv(os.path.join("downloads",filename))
 
-@app.template_filter("reverse_string")
-def reverse_string(s):
-    return s[::-1]
+    return render_template(template_name_or_list="download.html",filename=filename)
 
-@app.template_filter("repeat")
-def repeat(s, times=2):
-    return s * times
-
-@app.template_filter("alternate_case")
-def alternate_case(s):
-    return "".join(c.upper() if i%2 == 0 else c.lower() for i,c in enumerate(s))
+@app.route("/download/<filename>")
+def download(filename):
+    return send_from_directory(directory="downloads",path=filename,download_name="result.csv")
 
 if __name__ == "__main__":
     app.run(debug=True,host="127.0.0.1",port=5555)
